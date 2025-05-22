@@ -33,7 +33,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   return (
     <div className="mb-3 px-2 space-y-1">
       <div className="flex items-center justify-between text-[13px] font-medium text-white/90">
-        <span>Language</span>
+        <span>语言</span>
         <select
           value={currentLanguage}
           onChange={handleLanguageChange}

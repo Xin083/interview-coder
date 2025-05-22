@@ -179,12 +179,30 @@ if (!gotTheLock) {
   app.quit()
 } else {
   app.on("second-instance", (event, commandLine) => {
+    // 1. 先聚焦窗口
+    console.log("second-instance event received:", commandLine)
     // Someone tried to run a second instance, we should focus our window.
-    if (state.mainWindow) {
+    if (!state.mainWindow) {
+      createWindow()
+    } else {
       if (state.mainWindow.isMinimized()) state.mainWindow.restore()
       state.mainWindow.focus()
 
       // Protocol handler removed - no longer using auth callbacks
+    }
+    // 2. 解析 protocol 参数
+    const urlArg = commandLine.find(arg => arg.startsWith("interview-coder://"))
+    if (urlArg) {
+      try {
+        const myURL = new URL(urlArg)
+        const accessToken = myURL.searchParams.get("t")
+        const refreshToken = myURL.searchParams.get("r")
+        if (state.mainWindow) {
+          state.mainWindow.webContents.send("auth-token", { accessToken, refreshToken })
+        }
+      } catch (e) {
+        console.error("Failed to parse protocol url:", e)
+      }
     }
   })
 }
@@ -579,6 +597,20 @@ async function initializeApp() {
 app.on("open-url", (event, url) => {
   console.log("open-url event received:", url)
   event.preventDefault()
+  try {
+    const myURL = new URL(url)
+    const accessToken = myURL.searchParams.get("t")
+    const refreshToken = myURL.searchParams.get("r")
+    console.log("accessToken:", accessToken)
+    console.log("refreshToken:", refreshToken)
+    // 你可以通过 mainWindow.webContents.send 发送到前端
+    if (state.mainWindow) {
+      state.mainWindow.webContents.send("auth-token", { accessToken, refreshToken })
+    }
+    // 或者在主进程里保存
+  } catch (e) {
+    console.error("Failed to parse protocol url:", e)
+  }
 })
 
 // Handle second instance (removed auth callback handling)
@@ -592,6 +624,20 @@ app.on("second-instance", (event, commandLine) => {
     if (state.mainWindow.isMinimized()) state.mainWindow.restore()
     state.mainWindow.focus()
   }
+    // 2. 解析 protocol 参数
+    const urlArg = commandLine.find(arg => arg.startsWith("interview-coder://"))
+    if (urlArg) {
+      try {
+        const myURL = new URL(urlArg)
+        const accessToken = myURL.searchParams.get("t")
+        const refreshToken = myURL.searchParams.get("r")
+        if (state.mainWindow) {
+          state.mainWindow.webContents.send("auth-token", { accessToken, refreshToken })
+        }
+      } catch (e) {
+        console.error("Failed to parse protocol url:", e)
+      }
+    }
 })
 
 // Prevent multiple instances of the app
@@ -712,3 +758,50 @@ export {
 }
 
 app.whenReady().then(initializeApp)
+
+// 添加 open-external 处理程序
+ipcMain.handle("open-external", async (_, url: string) => {
+  console.log("Main process: Opening external URL:", url)
+  return shell.openExternal(url)
+})
+
+// 添加登录状态检查处理程序
+ipcMain.handle("check-login-status", async () => {
+  try {
+    // 创建一个隐藏的窗口来检查登录状态
+    const checkWindow = new BrowserWindow({
+      show: false,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true
+      }
+    });
+
+    // 加载登录页面
+    await checkWindow.loadURL("https://www.interviewcoder.cn/signin");
+
+    // 等待页面加载完成
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // 检查页面内容来判断登录状态
+    const isLoggedIn = await checkWindow.webContents.executeJavaScript(`
+      // 检查是否存在登录状态指示器
+      document.querySelector('.user-avatar') !== null ||
+      document.querySelector('.user-profile') !== null ||
+      document.querySelector('.logout-button') !== null
+    `);
+
+    // 关闭检查窗口
+    checkWindow.close();
+
+    // 发送登录状态变化事件
+    if (state.mainWindow) {
+      state.mainWindow.webContents.send("login-status-changed", isLoggedIn);
+    }
+
+    return isLoggedIn;
+  } catch (error) {
+    console.error("Error checking login status:", error);
+    return false;
+  }
+});

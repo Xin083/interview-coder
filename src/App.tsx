@@ -15,6 +15,7 @@ import {
 import { ToastContext } from "./contexts/toast"
 import { WelcomeScreen } from "./components/WelcomeScreen"
 import { SettingsDialog } from "./components/Settings/SettingsDialog"
+import {LoginPage} from "./components/LoginPage.tsx";
 
 // Create a React Query client
 const queryClient = new QueryClient({
@@ -249,7 +250,8 @@ function App() {
                   setLanguage={updateLanguage}
                 />
               ) : (
-                <WelcomeScreen onOpenSettings={handleOpenSettings} />
+                // <WelcomeScreen onOpenSettings={handleOpenSettings} />
+                <LoginPage />
               )
             ) : (
               <div className="min-h-screen bg-black flex items-center justify-center">

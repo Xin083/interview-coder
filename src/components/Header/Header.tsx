@@ -68,7 +68,7 @@ export function Header({ currentLanguage, setLanguage, onOpenSettings }: HeaderP
   return (
     <div className="bg-black p-2 border-b border-white/10 flex items-center justify-between">
       <div className="flex items-center space-x-1">
-        <span className="text-white text-sm mr-2">Language:</span>
+        <span className="text-white text-sm mr-2">语言:</span>
         <div className="relative">
           <button
             onClick={toggleDropdown}
@@ -110,10 +110,10 @@ export function Header({ currentLanguage, setLanguage, onOpenSettings }: HeaderP
           size="sm"
           className="h-8 px-2 text-white/70 hover:text-white hover:bg-white/10"
           onClick={onOpenSettings}
-          title="Settings"
+          title="设置"
         >
           <Settings className="h-4 w-4 mr-1" />
-          <span className="text-xs">Settings</span>
+          <span className="text-xs">设置</span>
         </Button>
         
         <Button
@@ -121,10 +121,10 @@ export function Header({ currentLanguage, setLanguage, onOpenSettings }: HeaderP
           size="sm"
           className="h-8 px-2 text-red-400/80 hover:text-red-400 hover:bg-white/10"
           onClick={handleLogout}
-          title="Log Out"
+          title="退出登陆"
         >
           <LogOut className="h-4 w-4 mr-1" />
-          <span className="text-xs">Log Out</span>
+          <span className="text-xs">退出登陆</span>
         </Button>
       </div>
     </div>

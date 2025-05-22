@@ -34,139 +34,139 @@ type ModelCategory = {
 const modelCategories: ModelCategory[] = [
   {
     key: 'extractionModel',
-    title: 'Problem Extraction',
-    description: 'Model used to analyze screenshots and extract problem details',
+    title: '问题提取',
+    description: '分析屏幕截图和提取问题细节的模型',
     openaiModels: [
       {
         id: "gpt-4o",
         name: "gpt-4o",
-        description: "Best overall performance for problem extraction"
+        description: "问题整体性能提取的最佳"
       },
       {
         id: "gpt-4o-mini",
         name: "gpt-4o-mini",
-        description: "Faster, more cost-effective option"
+        description: "更快、更具成本效益的选择"
       }
     ],
     geminiModels: [
       {
         id: "gemini-1.5-pro",
         name: "Gemini 1.5 Pro",
-        description: "Best overall performance for problem extraction"
+        description: "问题整体性能提取的最佳"
       },
       {
         id: "gemini-2.0-flash",
         name: "Gemini 2.0 Flash",
-        description: "Faster, more cost-effective option"
+        description: "更快、更具成本效益的选择"
       }
     ],
     anthropicModels: [
       {
         id: "claude-3-7-sonnet-20250219",
         name: "Claude 3.7 Sonnet",
-        description: "Best overall performance for problem extraction"
+        description: "问题整体性能提取的最佳"
       },
       {
         id: "claude-3-5-sonnet-20241022",
         name: "Claude 3.5 Sonnet",
-        description: "Balanced performance and speed"
+        description: "在性能和速度间平衡"
       },
       {
         id: "claude-3-opus-20240229",
         name: "Claude 3 Opus",
-        description: "Top-level intelligence, fluency, and understanding"
+        description: "顶尖的智力、流利度和理解力"
       }
     ]
   },
   {
     key: 'solutionModel',
-    title: 'Solution Generation',
-    description: 'Model used to generate coding solutions',
+    title: '生成解决方案',
+    description: '用于生成编码解决方案的模型',
     openaiModels: [
       {
         id: "gpt-4o",
         name: "gpt-4o",
-        description: "Strong overall performance for coding tasks"
+        description: "编码任务的整体性能强劲"
       },
       {
         id: "gpt-4o-mini",
         name: "gpt-4o-mini",
-        description: "Faster, more cost-effective option"
+        description: "更快、更具成本效益的选择"
       }
     ],
     geminiModels: [
       {
         id: "gemini-1.5-pro",
         name: "Gemini 1.5 Pro",
-        description: "Strong overall performance for coding tasks"
+        description: "编码任务的整体性能强劲"
       },
       {
         id: "gemini-2.0-flash",
         name: "Gemini 2.0 Flash",
-        description: "Faster, more cost-effective option"
+        description: "更快、更具成本效益的选择"
       }
     ],
     anthropicModels: [
       {
         id: "claude-3-7-sonnet-20250219",
         name: "Claude 3.7 Sonnet",
-        description: "Strong overall performance for coding tasks"
+        description: "编码任务的整体性能强劲"
       },
       {
         id: "claude-3-5-sonnet-20241022",
         name: "Claude 3.5 Sonnet",
-        description: "Balanced performance and speed"
+        description: "在性能和速度间平衡"
       },
       {
         id: "claude-3-opus-20240229",
         name: "Claude 3 Opus",
-        description: "Top-level intelligence, fluency, and understanding"
+        description: "顶尖的智力、流利度和理解力"
       }
     ]
   },
   {
     key: 'debuggingModel',
     title: 'Debugging',
-    description: 'Model used to debug and improve solutions',
+    description: '用于调试和改进解决方案的模型',
     openaiModels: [
       {
         id: "gpt-4o",
         name: "gpt-4o",
-        description: "Best for analyzing code and error messages"
+        description: "最适合分析代码和错误消息"
       },
       {
         id: "gpt-4o-mini",
         name: "gpt-4o-mini",
-        description: "Faster, more cost-effective option"
+        description: "更快、更具成本效益的选择"
       }
     ],
     geminiModels: [
       {
         id: "gemini-1.5-pro",
         name: "Gemini 1.5 Pro",
-        description: "Best for analyzing code and error messages"
+        description: "最适合分析代码和错误消息"
       },
       {
         id: "gemini-2.0-flash",
         name: "Gemini 2.0 Flash",
-        description: "Faster, more cost-effective option"
+        description: "更快、更具成本效益的选择"
       }
     ],
     anthropicModels: [
       {
         id: "claude-3-7-sonnet-20250219",
         name: "Claude 3.7 Sonnet",
-        description: "Best for analyzing code and error messages"
+        description: "最适合分析代码和错误消息"
       },
       {
         id: "claude-3-5-sonnet-20241022",
         name: "Claude 3.5 Sonnet",
-        description: "Balanced performance and speed"
+        description: "在性能和速度间平衡"
       },
       {
         id: "claude-3-opus-20240229",
         name: "Claude 3 Opus",
-        description: "Top-level intelligence, fluency, and understanding"
+        description: "顶尖的智力、流利度和理解力"
       }
     ]
   }
@@ -316,15 +316,15 @@ export function SettingsDialog({ open: externalOpen, onOpenChange }: SettingsDia
         }}
       >        
         <DialogHeader>
-          <DialogTitle>API Settings</DialogTitle>
+          <DialogTitle>API 配置</DialogTitle>
           <DialogDescription className="text-white/70">
-            Configure your API key and model preferences. You'll need your own API key to use this application.
+            配置您的API密钥和模型偏好。您需要自己的API密钥才能使用此应用程序。
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
           {/* API Provider Selection */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">API Provider</label>
+            <label className="text-sm font-medium text-white">API 提供商</label>
             <div className="flex gap-2">
               <div
                 className={`flex-1 p-2 rounded-lg cursor-pointer transition-colors ${
@@ -391,8 +391,8 @@ export function SettingsDialog({ open: externalOpen, onOpenChange }: SettingsDia
           
           <div className="space-y-2">
             <label className="text-sm font-medium text-white" htmlFor="apiKey">
-            {apiProvider === "openai" ? "OpenAI API Key" : 
-             apiProvider === "gemini" ? "Gemini API Key" : 
+            {apiProvider === "openai" ? "OpenAI API 密钥" :
+             apiProvider === "gemini" ? "Gemini API 密钥" :
              "Anthropic API Key"}
             </label>
             <Input
@@ -413,97 +413,97 @@ export function SettingsDialog({ open: externalOpen, onOpenChange }: SettingsDia
               </p>
             )}
             <p className="text-xs text-white/50">
-              Your API key is stored locally and never sent to any server except {apiProvider === "openai" ? "OpenAI" : "Google"}
+              您的API密钥存储在本地 除了 {apiProvider === "openai" ? "OpenAI" : "Google"}
             </p>
             <div className="mt-2 p-2 rounded-md bg-white/5 border border-white/10">
-              <p className="text-xs text-white/80 mb-1">Don't have an API key?</p>
+              <p className="text-xs text-white/80 mb-1">你没有API密钥吗？</p>
               {apiProvider === "openai" ? (
                 <>
-                  <p className="text-xs text-white/60 mb-1">1. Create an account at <button 
+                  <p className="text-xs text-white/60 mb-1">1. 创建一个账户 <button
                     onClick={() => openExternalLink('https://platform.openai.com/signup')} 
                     className="text-blue-400 hover:underline cursor-pointer">OpenAI</button>
                   </p>
-                  <p className="text-xs text-white/60 mb-1">2. Go to <button 
+                  <p className="text-xs text-white/60 mb-1">2. 前往 <button
                     onClick={() => openExternalLink('https://platform.openai.com/api-keys')} 
                     className="text-blue-400 hover:underline cursor-pointer">API Keys</button> section
                   </p>
-                  <p className="text-xs text-white/60">3. Create a new secret key and paste it here</p>
+                  <p className="text-xs text-white/60">3. 创建一个新的API密钥并粘贴到这里</p>
                 </>
               ) : apiProvider === "gemini" ?  (
                 <>
-                  <p className="text-xs text-white/60 mb-1">1. Create an account at <button 
+                  <p className="text-xs text-white/60 mb-1">1. 创建一个账户 <button
                     onClick={() => openExternalLink('https://aistudio.google.com/')} 
                     className="text-blue-400 hover:underline cursor-pointer">Google AI Studio</button>
                   </p>
-                  <p className="text-xs text-white/60 mb-1">2. Go to the <button 
+                  <p className="text-xs text-white/60 mb-1">2. 前往 <button
                     onClick={() => openExternalLink('https://aistudio.google.com/app/apikey')} 
                     className="text-blue-400 hover:underline cursor-pointer">API Keys</button> section
                   </p>
-                  <p className="text-xs text-white/60">3. Create a new API key and paste it here</p>
+                  <p className="text-xs text-white/60">3. 创建一个新的API密钥并粘贴到这里</p>
                 </>
               ) : (
                 <>
-                  <p className="text-xs text-white/60 mb-1">1. Create an account at <button 
+                  <p className="text-xs text-white/60 mb-1">1. 创建一个账户 <button
                     onClick={() => openExternalLink('https://console.anthropic.com/signup')} 
                     className="text-blue-400 hover:underline cursor-pointer">Anthropic</button>
                   </p>
-                  <p className="text-xs text-white/60 mb-1">2. Go to the <button 
+                  <p className="text-xs text-white/60 mb-1">2. 前往 <button
                     onClick={() => openExternalLink('https://console.anthropic.com/settings/keys')} 
                     className="text-blue-400 hover:underline cursor-pointer">API Keys</button> section
                   </p>
-                  <p className="text-xs text-white/60">3. Create a new API key and paste it here</p>
+                  <p className="text-xs text-white/60">3. 创建一个新的API密钥并粘贴到这里</p>
                 </>
               )}
             </div>
           </div>
           
           <div className="space-y-2 mt-4">
-            <label className="text-sm font-medium text-white mb-2 block">Keyboard Shortcuts</label>
+            <label className="text-sm font-medium text-white mb-2 block">键盘快捷键</label>
             <div className="bg-black/30 border border-white/10 rounded-lg p-3">
               <div className="grid grid-cols-2 gap-y-2 text-xs">
-                <div className="text-white/70">Toggle Visibility</div>
+                <div className="text-white/70">切换可见性</div>
                 <div className="text-white/90 font-mono">Ctrl+B / Cmd+B</div>
                 
-                <div className="text-white/70">Take Screenshot</div>
+                <div className="text-white/70">截图</div>
                 <div className="text-white/90 font-mono">Ctrl+H / Cmd+H</div>
                 
-                <div className="text-white/70">Process Screenshots</div>
+                <div className="text-white/70">处理截图</div>
                 <div className="text-white/90 font-mono">Ctrl+Enter / Cmd+Enter</div>
                 
-                <div className="text-white/70">Delete Last Screenshot</div>
+                <div className="text-white/70">删除最后截图</div>
                 <div className="text-white/90 font-mono">Ctrl+L / Cmd+L</div>
                 
-                <div className="text-white/70">Reset View</div>
+                <div className="text-white/70">重置视图</div>
                 <div className="text-white/90 font-mono">Ctrl+R / Cmd+R</div>
                 
-                <div className="text-white/70">Quit Application</div>
+                <div className="text-white/70">退出应用程序</div>
                 <div className="text-white/90 font-mono">Ctrl+Q / Cmd+Q</div>
                 
-                <div className="text-white/70">Move Window</div>
+                <div className="text-white/70">移动窗口</div>
                 <div className="text-white/90 font-mono">Ctrl+Arrow Keys</div>
                 
-                <div className="text-white/70">Decrease Opacity</div>
+                <div className="text-white/70">减少透明度</div>
                 <div className="text-white/90 font-mono">Ctrl+[ / Cmd+[</div>
                 
-                <div className="text-white/70">Increase Opacity</div>
+                <div className="text-white/70">增加透明度</div>
                 <div className="text-white/90 font-mono">Ctrl+] / Cmd+]</div>
                 
-                <div className="text-white/70">Zoom Out</div>
+                <div className="text-white/70">缩小</div>
                 <div className="text-white/90 font-mono">Ctrl+- / Cmd+-</div>
                 
-                <div className="text-white/70">Reset Zoom</div>
+                <div className="text-white/70">重置</div>
                 <div className="text-white/90 font-mono">Ctrl+0 / Cmd+0</div>
                 
-                <div className="text-white/70">Zoom In</div>
+                <div className="text-white/70">放大</div>
                 <div className="text-white/90 font-mono">Ctrl+= / Cmd+=</div>
               </div>
             </div>
           </div>
           
           <div className="space-y-4 mt-4">
-            <label className="text-sm font-medium text-white">AI Model Selection</label>
+            <label className="text-sm font-medium text-white">AI 模型选择</label>
             <p className="text-xs text-white/60 -mt-3 mb-2">
-              Select which models to use for each stage of the process
+              为每个阶段选择要使用的模型
             </p>
             
             {modelCategories.map((category) => {
@@ -570,14 +570,14 @@ export function SettingsDialog({ open: externalOpen, onOpenChange }: SettingsDia
             onClick={() => handleOpenChange(false)}
             className="border-white/10 hover:bg-white/5 text-white"
           >
-            Cancel
+            取消
           </Button>
           <Button
             className="px-4 py-3 bg-white text-black rounded-xl font-medium hover:bg-white/90 transition-colors"
             onClick={handleSave}
             disabled={isLoading || !apiKey}
           >
-            {isLoading ? "Saving..." : "Save Settings"}
+            {isLoading ? "正在保存中..." : "保存设置"}
           </Button>
         </DialogFooter>
       </DialogContent>

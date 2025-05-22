@@ -1,6 +1,6 @@
 console.log("Preload script starting...")
-import { contextBridge, ipcRenderer } from "electron"
-const { shell } = require("electron")
+import { contextBridge, ipcRenderer, shell } from "electron"
+// const { shell } = require("electron")
 
 export const PROCESSING_EVENTS = {
   //global states
@@ -24,6 +24,18 @@ export const PROCESSING_EVENTS = {
 
 // At the top of the file
 console.log("Preload script is running")
+
+
+
+ipcRenderer.on('auth-token', (event, { accessToken, refreshToken }) => {
+  // 这里就能拿到 token 了
+  console.log('accessToken:', accessToken)
+  console.log('refreshToken:', refreshToken)
+  // 你可以存到 localStorage 或做后续处理
+  // accessToken = "eyJhbGciOiJIUzI1NiIsImtpZCI6IitLSkxzZ1B5YXFkMDN4L3giLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3VodHhzY2htcG9yeXhlenBkbHlnLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI5ZmQwYjg5ZC0zNmJjLTQ1MDUtOGM3Zi1iZTg1ZmRlZTI3YmIiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ4NDU0NTUzLCJpYXQiOjE3NDg0NTA5NTMsImVtYWlsIjoieGlubGVpMDgzQGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJzIjpbImdvb2dsZSJdfSwidXNlcl9tZXRhZGF0YSI6eyJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSmVvNFZVVXJucC1OR1NXbXRJZ2JBRkRabU5LMTBpc1pGVkZxRC1JYXc5T3NuMF93PXM5Ni1jIiwiZW1haWwiOiJ4aW5sZWkwODNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZ1bGxfbmFtZSI6Iumbt-mRqyIsImlzcyI6Imh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbSIsIm5hbWUiOiLpm7fpkasiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKZW80VlVVcm5wLU5HU1dtdElnYkFGRFptTksxMGlzWkZWRnFELUlhdzlPc24wX3c9czk2LWMiLCJwcm92aWRlcl9pZCI6IjExMDAwNzQwNDE2MDI4MDQ2MTI3MyIsInN1YiI6IjExMDAwNzQwNDE2MDI4MDQ2MTI3MyJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6Im9hdXRoIiwidGltZXN0YW1wIjoxNzQ4NDUwOTUzfV0sInNlc3Npb25faWQiOiIwYjhkYWU3Ny1kMGJlLTRlODYtYmZmMS0yOTQyY2RhOTY5NGIiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.OmR4XEYEaOAMJKqoYxxnWIlwTZbLGdK3rqS98aY5Lu8"
+  // refreshToken = "3qvgaix5abtp"
+})
+
 
 const electronAPI = {
   // Original methods
@@ -236,7 +248,19 @@ const electronAPI = {
       ipcRenderer.removeListener("delete-last-screenshot", subscription)
     }
   },
-  deleteLastScreenshot: () => ipcRenderer.invoke("delete-last-screenshot")
+  deleteLastScreenshot: () => ipcRenderer.invoke("delete-last-screenshot"),
+  
+  // 添加检查登录状态的方法
+  checkLoginStatus: () => ipcRenderer.invoke("check-login-status"),
+  
+  // 添加登录状态变化监听
+  onLoginStatusChange: (callback: (isLoggedIn: boolean) => void) => {
+    const subscription = (_: any, isLoggedIn: boolean) => callback(isLoggedIn)
+    ipcRenderer.on("login-status-changed", subscription)
+    return () => {
+      ipcRenderer.removeListener("login-status-changed", subscription)
+    }
+  },
 }
 
 // Before exposing the API
@@ -246,7 +270,16 @@ console.log(
 )
 
 // Expose the API
-contextBridge.exposeInMainWorld("electronAPI", electronAPI)
+console.log("Exposing electronAPI to window...")
+const openExternal = (url: string) => {
+  console.log("Opening external URL:", url)
+  return ipcRenderer.invoke("open-external", url)
+}
+
+contextBridge.exposeInMainWorld("electronAPI", {
+  ...electronAPI,
+  openExternal
+})
 
 console.log("electronAPI exposed to window")
 

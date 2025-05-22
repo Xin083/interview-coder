@@ -79,7 +79,7 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
               }
             }}
           >
-            <span className="text-[11px] leading-none">Show/Hide</span>
+            <span className="text-[11px] leading-none">显示/隐藏</span>
             <div className="flex gap-1">
               <button className="bg-white/10 rounded-md px-1.5 py-1 text-[11px] leading-none text-white/70">
                 {COMMAND_KEY}
@@ -181,7 +181,7 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
               }
             }}
           >
-            <span className="text-[11px] leading-none">Start Over</span>
+            <span className="text-[11px] leading-none">重新开始</span>
             <div className="flex gap-1">
               <button className="bg-white/10 rounded-md px-1.5 py-1 text-[11px] leading-none text-white/70">
                 {COMMAND_KEY}
@@ -230,7 +230,7 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                 <div className="p-3 text-xs bg-black/80 backdrop-blur-md rounded-lg border border-white/10 text-white/90 shadow-lg">
                   <div className="space-y-4">
                     <h3 className="font-medium whitespace-nowrap">
-                      Keyboard Shortcuts
+                      键盘快捷键
                     </h3>
                     <div className="space-y-3">
                       {/* Show/Hide - Always visible */}
@@ -262,7 +262,7 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="truncate">Toggle Window</span>
+                          <span className="truncate">切换窗口</span>
                           <div className="flex gap-1 flex-shrink-0">
                             <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
                               {COMMAND_KEY}
@@ -273,7 +273,7 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                           </div>
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
-                          Show or hide this window.
+                          显示或隐藏此窗口。
                         </p>
                       </div>
 
@@ -393,7 +393,7 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="truncate">Start Over</span>
+                          <span className="truncate">重新开始</span>
                           <div className="flex gap-1 flex-shrink-0">
                             <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
                               {COMMAND_KEY}
@@ -404,7 +404,7 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                           </div>
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
-                          Start fresh with a new question.
+                          换个新问题重新开始。
                         </p>
                       </div>
                     </div>
@@ -419,12 +419,12 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                       {/* API Key Settings */}
                       <div className="mb-3 px-2 space-y-1">
                         <div className="flex items-center justify-between text-[13px] font-medium text-white/90">
-                          <span>OpenAI API Settings</span>
+                          <span>OpenAI API 设置</span>
                           <button
                             className="bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-[11px]"
                             onClick={() => window.electronAPI.openSettingsPortal()}
                           >
-                            Settings
+                            设置
                           </button>
                         </div>
                       </div>
@@ -449,7 +449,7 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                             <line x1="21" y1="12" x2="9" y2="12" />
                           </svg>
                         </div>
-                        Log Out
+                        退出登陆
                       </button>
                     </div>
                   </div>

@@ -135,16 +135,16 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
           >
             <span className="text-[11px] leading-none truncate">
               {screenshotCount === 0
-                ? "Take first screenshot"
+                ? "第1张截图"
                 : screenshotCount === 1
-                ? "Take second screenshot"
+                ? "第2张截图"
                 : screenshotCount === 2
-                ? "Take third screenshot"
+                ? "第3张截图"
                 : screenshotCount === 3
-                ? "Take fourth screenshot"
+                ? "第4张截图"
                 : screenshotCount === 4
-                ? "Take fifth screenshot"
-                : "Next will replace first screenshot"}
+                ? "第5张截图"
+                : "下一步将替换第一个截图"}
             </span>
             <div className="flex gap-1">
               <button className="bg-white/10 rounded-md px-1.5 py-1 text-[11px] leading-none text-white/70">
@@ -181,7 +181,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
               }}
             >
               <div className="flex items-center justify-between">
-                <span className="text-[11px] leading-none">Solve </span>
+                <span className="text-[11px] leading-none">解答 </span>
                 <div className="flex gap-1 ml-2">
                   <button className="bg-white/10 rounded-md px-1.5 py-1 text-[11px] leading-none text-white/70">
                     {COMMAND_KEY}
@@ -231,7 +231,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                 <div className="absolute -top-2 right-0 w-full h-2" />
                 <div className="p-3 text-xs bg-black/80 backdrop-blur-md rounded-lg border border-white/10 text-white/90 shadow-lg">
                   <div className="space-y-4">
-                    <h3 className="font-medium truncate">Keyboard Shortcuts</h3>
+                    <h3 className="font-medium truncate">键盘快捷键</h3>
                     <div className="space-y-3">
                       {/* Toggle Command */}
                       <div
@@ -262,7 +262,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="truncate">Toggle Window</span>
+                          <span className="truncate">切换窗口</span>
                           <div className="flex gap-1 flex-shrink-0">
                             <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
                               {COMMAND_KEY}
@@ -273,7 +273,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                           </div>
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
-                          Show or hide this window.
+                          显示或隐藏此窗口。
                         </p>
                       </div>
 
@@ -306,7 +306,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="truncate">Take Screenshot</span>
+                          <span className="truncate">截图</span>
                           <div className="flex gap-1 flex-shrink-0">
                             <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
                               {COMMAND_KEY}
@@ -317,7 +317,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                           </div>
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
-                          Take a screenshot of the problem description.
+                          截取问题描述的屏幕截图。
                         </p>
                       </div>
 
@@ -359,7 +359,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="truncate">Solve</span>
+                          <span className="truncate">解答</span>
                           <div className="flex gap-1 flex-shrink-0">
                             <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
                               {COMMAND_KEY}
@@ -371,8 +371,8 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
                           {screenshotCount > 0
-                            ? "Generate a solution based on the current problem."
-                            : "Take a screenshot first to generate a solution."}
+                            ? "根据当前问题生成解决方案。"
+                            : "首先截取一个屏幕截图来生成一个解决方案。"}
                         </p>
                       </div>
                       
@@ -410,7 +410,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="truncate">Delete Last Screenshot</span>
+                          <span className="truncate">删除上一张截图</span>
                           <div className="flex gap-1 flex-shrink-0">
                             <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
                               {COMMAND_KEY}
@@ -422,7 +422,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
                           {screenshotCount > 0
-                            ? "Remove the most recently taken screenshot."
+                            ? "删除最近拍摄的屏幕截图。"
                             : "No screenshots to delete."}
                         </p>
                       </div>
@@ -444,7 +444,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                             }
                           }}
                         >
-                          <span className="text-[11px] text-white/70">Language</span>
+                          <span className="text-[11px] text-white/70">语言</span>
                           <div className="flex items-center gap-2">
                             <span className="text-[11px] text-white/90">{currentLanguage}</span>
                             <div className="text-white/40 text-[8px]">
@@ -459,12 +459,12 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                       {/* API Key Settings */}
                       <div className="mb-3 px-2 space-y-1">
                         <div className="flex items-center justify-between text-[13px] font-medium text-white/90">
-                          <span>OpenAI API Settings</span>
+                          <span>OpenAI API 设置</span>
                           <button
                             className="bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-[11px]"
                             onClick={() => window.electronAPI.openSettingsPortal()}
                           >
-                            Settings
+                            配置
                           </button>
                         </div>
                       </div>
@@ -489,7 +489,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                             <line x1="21" y1="12" x2="9" y2="12" />
                           </svg>
                         </div>
-                        Log Out
+                        退出登陆
                       </button>
                     </div>
                   </div>

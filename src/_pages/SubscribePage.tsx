@@ -61,22 +61,22 @@ export default function SubscribePage({ user }: SubscribePageProps) {
       <div className="w-full px-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-white">
-            Welcome to Interview Coder
+            欢迎来到面试助手
           </h2>
           <p className="text-gray-400 text-sm mt-2 mb-6">
-            To continue using Interview Coder, you'll need to subscribe
-            ($60/month)
+            要继续使用面试助手，您需要订阅
+            (¥60/月)
           </p>
           <p className="text-gray-500 text-[11px] -mt-4 mb-6 italic">
-            * Undetectability may not work with some versions of MacOS. See our
-            help center for more details
+            * 无法检测可能不适用于某些版本的MacOS。查看我们的
+            帮助中心了解更多详细信息
           </p>
 
           {/* Keyboard Shortcuts */}
           <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 mb-6">
             <div className="flex items-center justify-between text-white/70 text-xs">
               <div className="flex items-center gap-2">
-                <span className="text-white/40">Toggle Visibility</span>
+                <span className="text-white/40">切换可见性</span>
                 <div className="flex gap-1">
                   <kbd className="bg-white/[0.07] border border-white/[0.1] rounded-md px-1.5 py-1 text-[10px] leading-none text-white/60">
                     ⌘
@@ -87,7 +87,7 @@ export default function SubscribePage({ user }: SubscribePageProps) {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-white/40">Quit App</span>
+                <span className="text-white/40">退出应用程序</span>
                 <div className="flex gap-1">
                   <kbd className="bg-white/[0.07] border border-white/[0.1] rounded-md px-1.5 py-1 text-[10px] leading-none text-white/60">
                     ⌘
@@ -145,7 +145,7 @@ export default function SubscribePage({ user }: SubscribePageProps) {
                   <line x1="21" y1="12" x2="9" y2="12" />
                 </svg>
               </div>
-              Log Out
+              退出登陆
             </button>
           </div>
 
