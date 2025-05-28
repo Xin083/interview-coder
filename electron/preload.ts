@@ -25,15 +25,27 @@ export const PROCESSING_EVENTS = {
 // At the top of the file
 console.log("Preload script is running")
 
-
+function parseJwt(token: string) {
+  if (!token) return null;
+  const base64Url = token.split('.')[1];
+  if (!base64Url) return null;
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+      .join('')
+  );
+  return JSON.parse(jsonPayload);
+}
 
 ipcRenderer.on('auth-token', (event, { accessToken, refreshToken }) => {
-  // 这里就能拿到 token 了
-  console.log('accessToken:', accessToken)
-  console.log('refreshToken:', refreshToken)
-  // 你可以存到 localStorage 或做后续处理
-  // accessToken = "eyJhbGciOiJIUzI1NiIsImtpZCI6IitLSkxzZ1B5YXFkMDN4L3giLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3VodHhzY2htcG9yeXhlenBkbHlnLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI5ZmQwYjg5ZC0zNmJjLTQ1MDUtOGM3Zi1iZTg1ZmRlZTI3YmIiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ4NDU0NTUzLCJpYXQiOjE3NDg0NTA5NTMsImVtYWlsIjoieGlubGVpMDgzQGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJzIjpbImdvb2dsZSJdfSwidXNlcl9tZXRhZGF0YSI6eyJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSmVvNFZVVXJucC1OR1NXbXRJZ2JBRkRabU5LMTBpc1pGVkZxRC1JYXc5T3NuMF93PXM5Ni1jIiwiZW1haWwiOiJ4aW5sZWkwODNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZ1bGxfbmFtZSI6Iumbt-mRqyIsImlzcyI6Imh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbSIsIm5hbWUiOiLpm7fpkasiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKZW80VlVVcm5wLU5HU1dtdElnYkFGRFptTksxMGlzWkZWRnFELUlhdzlPc24wX3c9czk2LWMiLCJwcm92aWRlcl9pZCI6IjExMDAwNzQwNDE2MDI4MDQ2MTI3MyIsInN1YiI6IjExMDAwNzQwNDE2MDI4MDQ2MTI3MyJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6Im9hdXRoIiwidGltZXN0YW1wIjoxNzQ4NDUwOTUzfV0sInNlc3Npb25faWQiOiIwYjhkYWU3Ny1kMGJlLTRlODYtYmZmMS0yOTQyY2RhOTY5NGIiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.OmR4XEYEaOAMJKqoYxxnWIlwTZbLGdK3rqS98aY5Lu8"
-  // refreshToken = "3qvgaix5abtp"
+
+  localStorage.setItem('accessToken', accessToken)
+  localStorage.setItem('refreshToken', refreshToken)
+  const accessTokenPayload = parseJwt(accessToken)
+  console.log('accessTokenPayload', accessTokenPayload)
+
 })
 
 
