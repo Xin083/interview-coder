@@ -154,6 +154,23 @@ function initializeHelpers() {
   } as IShortcutsHelperDeps)
 }
 
+
+
+import { desktopCapturer } from 'electron';
+// 在应用准备就绪时请求权限
+app.whenReady().then(async () => {
+  try {
+    // 请求屏幕录制权限
+    const sources = await desktopCapturer.getSources({ 
+      types: ['screen'],
+      thumbnailSize: { width: 0, height: 0 }
+    });
+    console.log('Screen capture permission requested', sources);
+  } catch (error) {
+    console.error('Failed to request screen capture permission:', error);
+  }
+});
+
 // Auth callback handler
 
 // Register the interview-coder protocol

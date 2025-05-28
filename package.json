@@ -30,6 +30,7 @@
     "asar": true,
     "compression": "maximum",
     "generateUpdatesFilesForAllChannels": true,
+    "afterSign": "scripts/notarize.ts",
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": [
@@ -48,9 +49,12 @@
           ]
         }
       ],
+      "extendInfo": {
+        "NSScreenCaptureUsageDescription": "需要屏幕录制权限用于截屏和录制内容。"
+      },
       "artifactName": "Interview-Coder-${arch}.${ext}",
       "icon": "assets/icons/mac/icon.icns",
-      "hardenedRuntime": true,
+      "hardenedRuntime": false,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
@@ -123,7 +127,7 @@
   "description": "An invisible desktop application to help you pass your technical interviews.",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
-    "@electron/notarize": "^2.3.0",
+    "@electron/notarize": "^3.0.1",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@radix-ui/react-dialog": "^1.1.2",
