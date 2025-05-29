@@ -10,9 +10,10 @@
     "start": "cross-env NODE_ENV=development concurrently \"tsc -p tsconfig.electron.json\" \"vite\" \"wait-on -t 30000 http://localhost:54321 && electron ./dist-electron/main.js\"",
     "build": "cross-env NODE_ENV=production npm run clean && vite build && tsc -p tsconfig.electron.json",
     "run-prod": "cross-env NODE_ENV=production electron ./dist-electron/main.js",
-    "package": "npm run build && electron-builder build",
-    "package-mac": "npm run build && electron-builder build --mac",
-    "package-win": "npm run build && electron-builder build --win"
+    "prepare-python": "node scripts/prepare-python.js",
+    "package": "npm run prepare-python && npm run build && electron-builder build",
+    "package-mac": "npm run prepare-python && npm run build && electron-builder build --mac",
+    "package-win": "npm run prepare-python && npm run build && electron-builder build --win"
   },
   "build": {
     "appId": "com.chunginlee.interviewcoder",
@@ -105,6 +106,13 @@
         "filter": [
           "**/*"
         ]
+      },
+      {
+        "from": "python",
+        "to": "python",
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "extraMetadata": {
@@ -144,6 +152,7 @@
     "lucide-react": "^0.460.0",
     "node-fetch": "^3.3.2",
     "openai": "^4.28.4",
+    "python-shell": "^5.0.0",
     "react": "^18.2.0",
     "react-code-blocks": "^0.1.6",
     "react-dom": "^18.2.0",

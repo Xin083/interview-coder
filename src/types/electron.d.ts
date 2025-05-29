@@ -63,18 +63,16 @@ export interface ElectronAPI {
   removeListener: (eventName: string, callback: (...args: any[]) => void) => void
 }
 
+export interface IElectronAPI {
+  ipcRenderer: {
+    invoke(channel: string, ...args: any[]): Promise<any>;
+  };
+}
+
 declare global {
   interface Window {
     electronAPI: ElectronAPI
-    electron: {
-      ipcRenderer: {
-        on: (channel: string, func: (...args: any[]) => void) => void
-        removeListener: (
-          channel: string,
-          func: (...args: any[]) => void
-        ) => void
-      }
-    }
+    electron: IElectronAPI
     __CREDITS__: number
     __LANGUAGE__: string
     __IS_INITIALIZED__: boolean

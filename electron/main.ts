@@ -8,6 +8,7 @@ import { ShortcutsHelper } from "./shortcuts"
 import { initAutoUpdater } from "./autoUpdater"
 import { configHelper } from "./ConfigHelper"
 import * as dotenv from "dotenv"
+import { TikTokService } from '../src/services/tiktokService'
 
 // Constants
 const isDev = process.env.NODE_ENV === "development"
@@ -382,6 +383,23 @@ async function createWindow(): Promise<void> {
     state.mainWindow.setOpacity(savedOpacity);
     state.isWindowVisible = true;
   }
+
+  const tiktokService = new TikTokService();
+
+  ipcMain.handle('fetch-tiktok-videos', async (_, username: string) => {
+    try {
+      console.log('Main process: Starting to fetch videos for username:', username);
+      const videos = await tiktokService.fetchUserVideos(username);
+      console.log('Main process: Successfully fetched videos:', videos.length);
+      return { success: true, data: videos };
+    } catch (error) {
+      console.error('Main process: Error fetching TikTok videos:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Failed to fetch videos' 
+      };
+    }
+  });
 }
 
 function handleWindowMove(): void {

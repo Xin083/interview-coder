@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react"
 import { useQuery } from "@tanstack/react-query"
 import ScreenshotQueue from "../components/Queue/ScreenshotQueue"
 import QueueCommands from "../components/Queue/QueueCommands"
+import { Button } from '../components/ui/button';
+import { Video } from 'lucide-react';
+import { TikTokFetcher } from '../components/TikTokFetcher';
 
 import { useToast } from "../contexts/toast"
 import { Screenshot } from "../types/screenshots"
@@ -17,7 +20,7 @@ async function fetchScreenshots(): Promise<Screenshot[]> {
 }
 
 interface QueueProps {
-  setView: (view: "queue" | "solutions" | "debug") => void
+  setView: (view: "queue" | "solutions" | "debug" | "tiktok") => void
   credits: number
   currentLanguage: string
   setLanguage: (language: string) => void
@@ -137,22 +140,42 @@ const Queue: React.FC<QueueProps> = ({
   };
   
   return (
-    <div ref={contentRef} className={`bg-transparent w-1/2`}>
-      <div className="px-4 py-3">
-        <div className="space-y-3 w-fit">
-          <ScreenshotQueue
-            isLoading={false}
-            screenshots={screenshots}
-            onDeleteScreenshot={handleDeleteScreenshot}
-          />
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">Queue</h2>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setView("tiktok")}
+            className="flex items-center gap-2"
+          >
+            <Video className="w-4 h-4" />
+            TikTok Videos
+          </Button>
+        </div>
+      </div>
+      <div className="flex gap-4">
+        <div ref={contentRef} className="bg-transparent w-1/2">
+          <div className="px-4 py-3">
+            <div className="space-y-3 w-fit">
+              <ScreenshotQueue
+                isLoading={false}
+                screenshots={screenshots}
+                onDeleteScreenshot={handleDeleteScreenshot}
+              />
 
-          <QueueCommands
-            onTooltipVisibilityChange={handleTooltipVisibilityChange}
-            screenshotCount={screenshots.length}
-            credits={credits}
-            currentLanguage={currentLanguage}
-            setLanguage={setLanguage}
-          />
+              <QueueCommands
+                onTooltipVisibilityChange={handleTooltipVisibilityChange}
+                screenshotCount={screenshots.length}
+                credits={credits}
+                currentLanguage={currentLanguage}
+                setLanguage={setLanguage}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="w-1/2">
+          <TikTokFetcher />
         </div>
       </div>
     </div>

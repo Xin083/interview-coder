@@ -13,9 +13,10 @@ import {
   ToastViewport
 } from "./components/ui/toast"
 import { ToastContext } from "./contexts/toast"
-import { WelcomeScreen } from "./components/WelcomeScreen"
+// import { WelcomeScreen } from "./components/WelcomeScreen"
 import { SettingsDialog } from "./components/Settings/SettingsDialog"
 import {LoginPage} from "./components/LoginPage.tsx";
+import { TikTokFetcher } from "./components/TikTokFetcher"
 
 // Create a React Query client
 const queryClient = new QueryClient({
@@ -44,7 +45,7 @@ function App() {
   const [currentLanguage, setCurrentLanguage] = useState<string>("python")
   const [isInitialized, setIsInitialized] = useState(false)
   const [hasApiKey, setHasApiKey] = useState(false)
-  const [apiKeyDialogOpen, setApiKeyDialogOpen] = useState(false)
+  // const [apiKeyDialogOpen, setApiKeyDialogOpen] = useState(false)
   // Note: Model selection is now handled via separate extraction/solution/debugging model settings
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -187,7 +188,7 @@ function App() {
         "Your OpenAI API key appears to be invalid or has insufficient credits",
         "error"
       )
-      setApiKeyDialogOpen(true)
+      // setApiKeyDialogOpen(true)
     }
 
     // Setup API key invalid listener
@@ -211,58 +212,37 @@ function App() {
   }, [updateCredits, updateLanguage, markInitialized, showToast])
 
   // API Key dialog management
-  const handleOpenSettings = useCallback(() => {
-    console.log('Opening settings dialog');
-    setIsSettingsOpen(true);
-  }, []);
+  // const handleOpenSettings = useCallback(() => {
+  //   console.log('Opening settings dialog');
+  //   setIsSettingsOpen(true);
+  // }, []);
   
   const handleCloseSettings = useCallback((open: boolean) => {
     console.log('Settings dialog state changed:', open);
     setIsSettingsOpen(open);
   }, []);
 
-  const handleApiKeySave = useCallback(async (apiKey: string) => {
-    try {
-      await window.electronAPI.updateConfig({ apiKey })
-      setHasApiKey(true)
-      showToast("Success", "API key saved successfully", "success")
-      
-      // Reload app after a short delay to reinitialize with the new API key
-      setTimeout(() => {
-        window.location.reload()
-      }, 1500)
-    } catch (error) {
-      console.error("Failed to save API key:", error)
-      showToast("Error", "Failed to save API key", "error")
-    }
-  }, [showToast])
+  // const handleApiKeySave = useCallback(async (apiKey: string) => {
+  //   try {
+  //     await window.electronAPI.updateConfig({ apiKey })
+  //     setHasApiKey(true)
+  //     showToast("Success", "API key saved successfully", "success")
+  //     setTimeout(() => {
+  //       window.location.reload()
+  //     }, 1500)
+  //   } catch (error) {
+  //     console.error("Failed to save API key:", error)
+  //     showToast("Error", "Failed to save API key", "error")
+  //   }
+  // }, [showToast])
 
   return (
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <ToastContext.Provider value={{ showToast }}>
           <div className="relative">
-            {isInitialized ? (
-              hasApiKey ? (
-                <SubscribedApp
-                  credits={credits}
-                  currentLanguage={currentLanguage}
-                  setLanguage={updateLanguage}
-                />
-              ) : (
-                // <WelcomeScreen onOpenSettings={handleOpenSettings} />
-                <LoginPage />
-              )
-            ) : (
-              <div className="min-h-screen bg-black flex items-center justify-center">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-6 h-6 border-2 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
-                  <p className="text-white/60 text-sm">
-                    Initializing...
-                  </p>
-                </div>
-              </div>
-            )}
+            
+          <TikTokFetcher />
             <UpdateNotification />
           </div>
           

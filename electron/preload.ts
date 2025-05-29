@@ -305,3 +305,12 @@ ipcRenderer.on("restore-focus", () => {
 })
 
 // Remove auth-callback handling - no longer needed
+
+// 添加 TikTok 相关的 IPC 处理
+contextBridge.exposeInMainWorld('electron', {
+  ipcRenderer: {
+    invoke: (channel: string, ...args: any[]) => {
+      return ipcRenderer.invoke(channel, ...args)
+    }
+  }
+})
