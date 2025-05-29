@@ -1,5 +1,19 @@
 # CodeInterviewAssist
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![TypeScript](https://badges.frapsoft.com/
+typescript/code/typescript.svg?v=101)]
+(https://github.com/ellerbrock/
+open-source-badges/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)](https://www.typescriptlang.org/)
+[![Electron](https://img.shields.io/badge/Electron-47848F?style=flat&logo=electron&logoColor=white)](https://www.electronjs.org/)
+[![React](https://img.shields.io/badge/
+React-20232A?style=flat&logo=react&
+logoColor=61DAFB)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://react.dev/)
+
 > ## ⚠️ IMPORTANT NOTICE TO THE COMMUNITY ⚠️
 > 
 > **This is a free, open-source initiative - NOT a full-service product!**
