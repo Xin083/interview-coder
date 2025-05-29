@@ -2,22 +2,33 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 interface AuthState {
+  id: string
+  email: string
+  subscriptionStatus: 'pro' | 'test'
   isAuthenticated: boolean
-  user: {
-    id: string
-    email: string
-  } | null
-  setAuth: (user: { id: string; email: string } | null) => void
-  logout: () => void
+  setAuth: (auth: { id: string; email: string; subscriptionStatus: 'pro' | 'test' }) => void
+  clearAuth: () => void
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
+      id: '',
+      email: '',
+      subscriptionStatus: 'test',
       isAuthenticated: false,
-      user: null,
-      setAuth: (user) => set({ isAuthenticated: !!user, user }),
-      logout: () => set({ isAuthenticated: false, user: null }),
+      setAuth: (auth) => set({
+        id: auth.id,
+        email: auth.email,
+        subscriptionStatus: auth.subscriptionStatus,
+        isAuthenticated: true
+      }),
+      clearAuth: () => set({
+        id: '',
+        email: '',
+        subscriptionStatus: 'test',
+        isAuthenticated: false
+      })
     }),
     {
       name: 'auth-storage',

@@ -66,6 +66,16 @@ const Queue: React.FC<QueueProps> = ({
     }
   }
 
+  const handleDeleteLastScreenshot = async () => {
+    try {
+      // 重新获取截图列表
+      await refetch();
+    } catch (error) {
+      console.error("Error refreshing screenshots:", error);
+      showToast("Error", "Failed to refresh screenshots", "error");
+    }
+  };
+
   useEffect(() => {
     // Height update logic
     const updateDimensions = () => {
@@ -152,6 +162,7 @@ const Queue: React.FC<QueueProps> = ({
             credits={credits}
             currentLanguage={currentLanguage}
             setLanguage={setLanguage}
+            onDeleteLastScreenshot={handleDeleteLastScreenshot}
           />
         </div>
       </div>

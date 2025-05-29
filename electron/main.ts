@@ -805,3 +805,45 @@ ipcMain.handle("check-login-status", async () => {
     return false;
   }
 });
+
+// 添加订阅状态检查处理程序
+ipcMain.handle("check-subscription-status", async (_, accessToken: string) => {
+  try {
+    // 创建一个隐藏的窗口来检查订阅状态
+    const checkWindow = new BrowserWindow({
+      show: false,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true
+      }
+    });
+
+    // 设置请求头
+    const headers = {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    };
+
+    // 发送请求到订阅状态 API
+    const response = await fetch('https://www.interviewcoder.cn/api/subscription/status', {
+      method: 'GET',
+      headers
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('订阅状态响应:', data);
+
+    // 关闭检查窗口
+    checkWindow.close();
+
+    // 返回订阅状态
+    return data.status; // 假设返回的数据中有 status 字段，值为 'pro' 或 'test'
+  } catch (error) {
+    console.error("检查订阅状态时发生错误:", error);
+    return 'test'; // 发生错误时默认为 test
+  }
+});

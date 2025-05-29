@@ -40,12 +40,20 @@ function parseJwt(token: string) {
 }
 
 ipcRenderer.on('auth-token', (event, { accessToken, refreshToken }) => {
+  console.log('preload - Received auth-token event:', { 
+    accessToken: accessToken ? 'present' : 'missing',
+    refreshToken: refreshToken ? 'present' : 'missing'
+  })
 
   localStorage.setItem('accessToken', accessToken)
   localStorage.setItem('refreshToken', refreshToken)
+  
   const accessTokenPayload = parseJwt(accessToken)
-  console.log('accessTokenPayload', accessTokenPayload)
+  console.log('preload - Parsed accessTokenPayload:', accessTokenPayload)
 
+  // Dispatch custom event to notify about login state change
+  window.dispatchEvent(new CustomEvent('loginStateChange', { detail: true }))
+  console.log('preload - Dispatched loginStateChange event')
 })
 
 
@@ -273,6 +281,10 @@ const electronAPI = {
       ipcRenderer.removeListener("login-status-changed", subscription)
     }
   },
+  
+  // 添加订阅状态检查方法
+  checkSubscriptionStatus: (accessToken: string) => 
+    ipcRenderer.invoke('check-subscription-status', accessToken),
 }
 
 // Before exposing the API

@@ -32,12 +32,12 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
 
   return (
     <div className="mb-3 px-2 space-y-1">
-      <div className="flex items-center justify-between text-[13px] font-medium text-white/90">
+      <div className="flex items-center justify-between cursor-pointer hover:bg-white/10 rounded px-2 py-1 transition-colors">
         <span>语言</span>
         <select
           value={currentLanguage}
           onChange={handleLanguageChange}
-          className="bg-black/80 text-white/90 rounded px-2 py-1 text-sm outline-none border border-white/10 focus:border-white/20"
+          className="flex items-center justify-between cursor-pointer hover:bg-white/10 rounded px-2 py-1 transition-colors"
           style={{ WebkitAppearance: 'menulist' }}
         >
           <option value="python" className="bg-black text-white">Python</option>

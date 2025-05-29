@@ -1,5 +1,5 @@
 import logo from '../../assets/logo.svg';
-
+import { COMMAND_KEY } from "../utils/platform"
 export const LoginPage: React.FC = () => {
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -40,11 +40,15 @@ export const LoginPage: React.FC = () => {
           <h3 className="text-white/90 font-medium mb-2 text-left">Keyboard shortcuts</h3>
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <span className="bg-white/10 text-white/80 rounded px-2 py-1 text-sm font-mono">B</span>
+              <span className="bg-white/10 text-white/80 rounded px-2 py-1 text-sm font-mono">{COMMAND_KEY} + ][</span>
+              <span className="text-white/80 text-sm">to light and shade</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="bg-white/10 text-white/80 rounded px-2 py-1 text-sm font-mono">{COMMAND_KEY} + B</span>
               <span className="text-white/80 text-sm">to toggle visibility</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="bg-white/10 text-white/80 rounded px-2 py-1 text-sm font-mono">Q</span>
+              <span className="bg-white/10 text-white/80 rounded px-2 py-1 text-sm font-mono">{COMMAND_KEY} + Q</span>
               <span className="text-white/80 text-sm">to quit</span>
             </div>
           </div>

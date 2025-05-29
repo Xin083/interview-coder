@@ -33,8 +33,14 @@ export function Header({ currentLanguage, setLanguage, onOpenSettings }: HeaderP
         apiKey: '',
       });
       
-      showToast('Success', 'Logged out successfully', 'success');
+      // Clear tokens
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       
+      // Dispatch login state change event
+      window.dispatchEvent(new CustomEvent('loginStateChange', { detail: false }));
+      
+      showToast('Success', 'Logged out successfully', 'success');     
       // Reload the app after a short delay
       setTimeout(() => {
         window.location.reload();

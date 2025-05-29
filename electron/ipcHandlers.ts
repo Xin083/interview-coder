@@ -1,6 +1,6 @@
 // ipcHandlers.ts
 
-import { ipcMain, shell, dialog } from "electron"
+import { ipcMain, shell, dialog, app } from "electron"
 import { randomBytes } from "crypto"
 import { IIpcHandlerDeps } from "./main"
 import { configHelper } from "./ConfigHelper"
@@ -186,6 +186,17 @@ export function initializeIpcHandlers(deps: IIpcHandlerDeps): void {
 
   ipcMain.handle("open-external-url", (event, url: string) => {
     shell.openExternal(url)
+  })
+  
+  // Add quit app handler
+  ipcMain.handle("quit-app", () => {
+    try {
+      app.quit()
+      return { success: true }
+    } catch (error) {
+      console.error("Error quitting app:", error)
+      return { error: "Failed to quit app" }
+    }
   })
   
   // Open external URL handler

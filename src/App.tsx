@@ -48,6 +48,8 @@ function App() {
   // Note: Model selection is now handled via separate extraction/solution/debugging model settings
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   // Set unlimited credits
   const updateCredits = useCallback(() => {
@@ -237,21 +239,54 @@ function App() {
     }
   }, [showToast])
 
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+
+    // Add custom event listener for login state changes
+    const handleLoginStateChange = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setIsRefreshing(true);
+      // Add a small delay before updating the login state
+      setTimeout(() => {
+        setIsLoggedIn(!!customEvent.detail);
+        setIsRefreshing(false);
+      }, 1500);
+    };
+
+    window.addEventListener("loginStateChange", handleLoginStateChange);
+    return () => {
+      window.removeEventListener("loginStateChange", handleLoginStateChange);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <ToastContext.Provider value={{ showToast }}>
           <div className="relative">
             {isInitialized ? (
-              hasApiKey ? (
-                <SubscribedApp
-                  credits={credits}
-                  currentLanguage={currentLanguage}
-                  setLanguage={updateLanguage}
-                />
+              isRefreshing ? (
+                <div className="min-h-screen bg-black flex items-center justify-center">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-8 h-8 border-3 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
+                    <p className="text-white/60 text-sm">
+                      正在刷新登录状态...
+                    </p>
+                  </div>
+                </div>
               ) : (
-                // <WelcomeScreen onOpenSettings={handleOpenSettings} />
-                <LoginPage />
+
+              // hasApiKey ? (
+                isLoggedIn ? (
+                  <SubscribedApp
+                    credits={credits}
+                    currentLanguage={currentLanguage}
+                    setLanguage={updateLanguage}
+                  />
+                ) : (
+                  <LoginPage />
+                )
               )
             ) : (
               <div className="min-h-screen bg-black flex items-center justify-center">
