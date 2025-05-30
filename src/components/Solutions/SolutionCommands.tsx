@@ -79,7 +79,8 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
               }
             }}
           >
-            <span className="text-[11px] leading-none">显示/隐藏</span>
+            {/*<span className="text-[11px] leading-none">显示/隐藏</span>*/}
+            <span className="text-[11px] leading-none">Show/Hide</span>
             <div className="flex gap-1">
               <button className="bg-white/10 rounded-md px-1.5 py-1 text-[11px] leading-none text-white/70">
                 {COMMAND_KEY}
@@ -181,8 +182,9 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
               }
             }}
           >
-            <span className="text-[11px] leading-none">重新开始</span>
-            <div className="flex gap-1">
+            {/*<span className="text-[11px] leading-none">重新开始</span>*/}
+            <span className="flex gap-1 flex-shrink-0">Start Over</span>
+            <div className="truncate">
               <button className="bg-white/10 rounded-md px-1.5 py-1 text-[11px] leading-none text-white/70">
                 {COMMAND_KEY}
               </button>
@@ -230,7 +232,8 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                 <div className="p-3 text-xs bg-black/80 backdrop-blur-md rounded-lg border border-white/10 text-white/90 shadow-lg">
                   <div className="space-y-4">
                     <h3 className="font-medium whitespace-nowrap">
-                      键盘快捷键
+                      {/*键盘快捷键*/}
+                      Keyboard Shortcuts
                     </h3>
                     <div className="space-y-3">
                       {/* Show/Hide - Always visible */}
@@ -262,7 +265,8 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="truncate">切换窗口</span>
+                          {/*<span className="truncate">切换窗口</span>*/}
+                          <span className="truncate">Toggle Window</span>
                           <div className="flex gap-1 flex-shrink-0">
                             <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
                               {COMMAND_KEY}
@@ -273,7 +277,8 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                           </div>
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
-                          显示或隐藏此窗口。
+                          {/*显示或隐藏此窗口。*/}
+                          Show or hide this window.
                         </p>
                       </div>
 
@@ -393,7 +398,8 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="truncate">重新开始</span>
+                          {/*<span className="truncate">重新开始</span>*/}
+                          <span className="truncate">Start Over</span>
                           <div className="flex gap-1 flex-shrink-0">
                             <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
                               {COMMAND_KEY}
@@ -404,7 +410,8 @@ const SolutionCommands: React.FC<SolutionCommandsProps> = ({
                           </div>
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
-                          换个新问题重新开始。
+                          {/*换个新问题重新开始。*/}
+                          Start fresh with a new question.
                         </p>
                       </div>
                     </div>

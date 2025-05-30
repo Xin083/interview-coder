@@ -11,6 +11,7 @@ import SolutionCommands from "../components/Solutions/SolutionCommands"
 import Debug from "./Debug"
 import { useToast } from "../contexts/toast"
 import { COMMAND_KEY } from "../utils/platform"
+import { useAuthStore } from "../store/authStore"
 
 export const ContentSection = ({
   title,
@@ -50,6 +51,9 @@ const SolutionSection = ({
   currentLanguage: string
 }) => {
   const [copied, setCopied] = useState(false)
+  const authStore = useAuthStore()
+  const isPro = authStore.subscriptionStatus === 'pro'
+  const shouldBlur = !isPro && authStore.freeTrialUsageCount >= 0
 
   const copyToClipboard = () => {
     if (typeof content === "string") {
@@ -74,7 +78,7 @@ const SolutionSection = ({
           </div>
         </div>
       ) : (
-        <div className="w-full relative">
+        <div className={`w-full relative ${shouldBlur ? 'blur-md' : ''}`}>
           <button
             onClick={copyToClipboard}
             className="absolute top-2 right-2 text-xs text-white bg-white/10 hover:bg-white/20 rounded px-2 py-1 transition"
@@ -131,6 +135,9 @@ export const ComplexitySection = ({
   
   const formattedTimeComplexity = formatComplexity(timeComplexity);
   const formattedSpaceComplexity = formatComplexity(spaceComplexity);
+  const authStore = useAuthStore()
+  const isPro = authStore.subscriptionStatus === 'pro'
+  const shouldBlur = !isPro && authStore.freeTrialUsageCount >= 0
   
   return (
     <div className="space-y-2">
@@ -142,7 +149,7 @@ export const ComplexitySection = ({
           Calculating complexity...
         </p>
       ) : (
-        <div className="space-y-3">
+        <div className={`space-y-3 ${shouldBlur ? 'blur-md' : ''}`}>
           <div className="text-[13px] leading-[1.4] text-gray-100 bg-white/5 rounded-md p-3">
             <div className="flex items-start gap-2">
               <div className="w-1 h-1 rounded-full bg-blue-400/80 mt-2 shrink-0" />
@@ -336,6 +343,12 @@ const Solutions: React.FC<SolutionsProps> = ({
           space_complexity: data.space_complexity
         }
 
+        // Increment free trial usage count if user is not pro
+        const authStore = useAuthStore.getState()
+        if (authStore.subscriptionStatus !== 'pro') {
+          authStore.incrementFreeTrialUsage()
+        }
+
         queryClient.setQueryData(["solution"], solutionData)
         setSolutionData(solutionData.code || null)
         setThoughtsData(solutionData.thoughts || null)
@@ -462,7 +475,7 @@ const Solutions: React.FC<SolutionsProps> = ({
       showToast("Error", "Failed to delete the screenshot", "error")
     }
   }
-
+  
   return (
     <>
       {!isResetting && queryClient.getQueryData(["new_solution"]) ? (
@@ -524,7 +537,7 @@ const Solutions: React.FC<SolutionsProps> = ({
                 {solutionData && (
                   <>
                     <ContentSection
-                      title={`My Thoughts (${COMMAND_KEY} + Arrow keys to scroll)`}
+                      title={`Your Thoughts (${COMMAND_KEY} + Arrow keys to scroll)`}
                       content={
                         thoughtsData && (
                           <div className="space-y-3">
