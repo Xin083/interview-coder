@@ -465,14 +465,16 @@ export class ProcessingHelper {
         const messages = [
           {
             role: "system" as const, 
-            content: "You are a coding challenge interpreter. Analyze the screenshot of the coding problem and extract all relevant information. Return the information in JSON format with these fields: problem_statement, constraints, example_input, example_output. Just return the structured JSON without any other text."
+            // content: "You are a coding challenge interpreter. Analyze the screenshot of the coding problem and extract all relevant information. Return the information in JSON format with these fields: problem_statement, constraints, example_input, example_output. Just return the structured JSON without any other text."
+            content: "你是一个编程问题解释器。分析编程问题的截图并提取所有相关信息。以JSON格式返回信息，包含以下字段：problem_statement（问题陈述）, constraints（约束条件）, example_input（示例输入）, example_output（示例输出）。只返回结构化的JSON，不要包含其他文本。所有内容请使用中文。"
           },
           {
             role: "user" as const,
             content: [
               {
                 type: "text" as const, 
-                text: `Extract the coding problem details from these screenshots. Return in JSON format. Preferred coding language we gonna use for this problem is ${language}.`
+                // text: `从这些截图中提取编程问题的详细信息。以JSON格式返回。我们将使用${language}作为编程语言。请使用中文描述所有内容。`
+                text: `从这些截图中提取编程问题的详细信息。以JSON格式返回。我们将使用${language}作为编程语言。`
               },
               ...imageDataList.map(data => ({
                 type: "image_url" as const,
@@ -515,14 +517,16 @@ export class ProcessingHelper {
         const messages = [
           {
             role: "system" as const, 
-            content: "You are a coding challenge interpreter. Analyze the screenshot of the coding problem and extract all relevant information. Return the information in JSON format with these fields: problem_statement, constraints, example_input, example_output. Just return the structured JSON without any other text."
+            // content: "You are a coding challenge interpreter. Analyze the screenshot of the coding problem and extract all relevant information. Return the information in JSON format with these fields: problem_statement, constraints, example_input, example_output. Just return the structured JSON without any other text."
+            content: "你是一个编程问题解释器。分析编程问题的截图并提取所有相关信息。以JSON格式返回信息，包含以下字段：problem_statement（问题陈述）, constraints（约束条件）, example_input（示例输入）, example_output（示例输出）。只返回结构化的JSON，不要包含其他文本。所有内容请使用中文。"
           },
           {
             role: "user" as const,
             content: [
               {
                 type: "text" as const, 
-                text: `Extract the coding problem details from these screenshots. Return in JSON format. Preferred coding language we gonna use for this problem is ${language}.`
+                // text: `从这些截图中提取编程问题的详细信息。以JSON格式返回。我们将使用${language}作为编程语言。请使用中文描述所有内容。`
+                text: `从这些截图中提取编程问题的详细信息。以JSON格式返回。我们将使用${language}作为编程语言。`
               },
               ...imageDataList.map(data => ({
                 type: "image_url" as const,
@@ -773,31 +777,47 @@ export class ProcessingHelper {
 
       // Create prompt for solution generation
       const promptText = `
-Generate a detailed solution for the following coding problem:
+// Generate a detailed solution for the following coding problem:
+请为以下编程问题生成详细的解决方案：
 
-PROBLEM STATEMENT:
+// PROBLEM STATEMENT:
+问题陈述：
 ${problemInfo.problem_statement}
 
-CONSTRAINTS:
-${problemInfo.constraints || "No specific constraints provided."}
+// CONSTRAINTS:
+// ${problemInfo.constraints || "No specific constraints provided."}
+约束条件：
+${problemInfo.constraints || "未提供具体约束条件。"}
 
-EXAMPLE INPUT:
-${problemInfo.example_input || "No example input provided."}
+// EXAMPLE INPUT:
+// ${problemInfo.example_input || "No example input provided."}
+示例输入：
+${problemInfo.example_input || "未提供示例输入。"}
 
-EXAMPLE OUTPUT:
-${problemInfo.example_output || "No example output provided."}
+// EXAMPLE OUTPUT:
+// ${problemInfo.example_output || "No example output provided."}
+示例输出：
+${problemInfo.example_output || "未提供示例输出。"}
 
-LANGUAGE: ${language}
+// LANGUAGE: ${language}
+编程语言：${language}
 
-I need the response in the following format:
-1. Code: A clean, optimized implementation in ${language}
-2. Your Thoughts: A list of key insights and reasoning behind your approach
-3. Time complexity: O(X) with a detailed explanation (at least 2 sentences)
-4. Space complexity: O(X) with a detailed explanation (at least 2 sentences)
+// I need the response in the following format:
+// 1. Code: A clean, optimized implementation in ${language}
+// 2. Your Thoughts: A list of key insights and reasoning behind your approach
+// 3. Time complexity: O(X) with a detailed explanation (at least 2 sentences)
+// 4. Space complexity: O(X) with a detailed explanation (at least 2 sentences)
+我需要以下格式的回复：
+1. 代码：用${language}编写的清晰、优化的实现
+2. 思路分析：列出关键见解和解题思路
+3. 时间复杂度：O(X) 并详细解释（至少2句话）
+4. 空间复杂度：O(X) 并详细解释（至少2句话）
 
-For complexity explanations, please be thorough. For example: "Time complexity: O(n) because we iterate through the array only once. This is optimal as we need to examine each element at least once to find the solution." or "Space complexity: O(n) because in the worst case, we store all elements in the hashmap. The additional space scales linearly with the input size."
+// For complexity explanations, please be thorough. For example: "Time complexity: O(n) because we iterate through the array only once. This is optimal as we need to examine each element at least once to find the solution." or "Space complexity: O(n) because in the worst case, we store all elements in the hashmap. The additional space scales linearly with the input size."
+对于复杂度解释，请详细说明。例如："时间复杂度：O(n)，因为我们只需要遍历数组一次。这是最优的，因为我们需要至少检查每个元素一次才能找到解决方案。" 或 "空间复杂度：O(n)，因为在最坏情况下，我们需要在哈希表中存储所有元素。额外空间随输入大小线性增长。"
 
-Your solution should be efficient, well-commented, and handle edge cases.
+// Your solution should be efficient, well-commented, and handle edge cases.
+你的解决方案应该是高效的、有良好注释的，并且能够处理边界情况。请用中文回答。
 `;
 
 

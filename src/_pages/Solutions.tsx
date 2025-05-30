@@ -28,7 +28,7 @@ export const ContentSection = ({
     {isLoading ? (
       <div className="mt-4 flex">
         <p className="text-xs bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 bg-clip-text text-transparent animate-pulse">
-          提取问题语句...
+          正在提取...
         </p>
       </div>
     ) : (
@@ -300,7 +300,7 @@ const Solutions: React.FC<SolutionsProps> = ({
         setTimeComplexityData(null)
         setSpaceComplexityData(null)
       }),
-      window.electronAPI.onProblemExtracted((data) => {
+      window.electronAPI.onProblemExtracted((data: any)  => {
         queryClient.setQueryData(["problem_statement"], data)
       }),
       //if there was an error processing the initial solution
@@ -323,7 +323,7 @@ const Solutions: React.FC<SolutionsProps> = ({
         console.error("Processing error:", error)
       }),
       //when the initial solution is generated, we'll set the solution data to that
-      window.electronAPI.onSolutionSuccess((data) => {
+      window.electronAPI.onSolutionSuccess((data: any) => {
         if (!data) {
           console.warn("Received empty or invalid solution data")
           return
@@ -347,7 +347,7 @@ const Solutions: React.FC<SolutionsProps> = ({
           try {
             const existing = await window.electronAPI.getScreenshots()
             const screenshots =
-              existing.previews?.map((p) => ({
+              existing.previews?.map((p: any) => ({
                 id: p.path,
                 path: p.path,
                 preview: p.preview,
@@ -370,7 +370,7 @@ const Solutions: React.FC<SolutionsProps> = ({
         setDebugProcessing(true)
       }),
       //the first time debugging works, we'll set the view to debug and populate the cache with the data
-      window.electronAPI.onDebugSuccess((data) => {
+      window.electronAPI.onDebugSuccess((data: any) => {
         queryClient.setQueryData(["new_solution"], data)
         setDebugProcessing(false)
       }),
@@ -507,7 +507,7 @@ const Solutions: React.FC<SolutionsProps> = ({
                 {!solutionData && (
                   <>
                     <ContentSection
-                      title="问题陈述"
+                      title="Problem Statement" //问题陈述
                       content={problemStatementData?.problem_statement}
                       isLoading={!problemStatementData}
                     />

@@ -431,9 +431,13 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
 
 
 
+                    <LanguageSelector
+                        currentLanguage={currentLanguage}
+                        setLanguage={setLanguage}
+                      />
 
                       {/* Simplified Language Selector */}
-                      <div className="space-y-3">
+                      {/* <div className="space-y-3">
                         <div 
                           className="cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors"
                           onClick={() => extractLanguagesAndUpdate('next')}
@@ -456,7 +460,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
 
 
                     <div className="space-y-3">
@@ -665,7 +669,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                           </div>
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
-                          键盘上下移动
+                          键盘上下移动窗口
                         </p>
                       </div>
 
