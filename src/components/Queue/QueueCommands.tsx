@@ -462,31 +462,31 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                     <div className="space-y-3">
                       {/* Toggle Command */}
                       <div
-                        className="cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors"
-                        onClick={async () => {
-                          try {
-                            const result =
-                              await window.electronAPI.toggleMainWindow()
-                            if (!result.success) {
-                              console.error(
-                                "Failed to toggle window:",
-                                result.error
-                              )
+                          className="cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors"
+                          onClick={async () => {
+                            try {
+                              const result =
+                                  await window.electronAPI.toggleMainWindow()
+                              if (!result.success) {
+                                console.error(
+                                    "Failed to toggle window:",
+                                    result.error
+                                )
+                                showToast(
+                                    "Error",
+                                    "Failed to toggle window",
+                                    "error"
+                                )
+                              }
+                            } catch (error) {
+                              console.error("Error toggling window:", error)
                               showToast(
-                                "Error",
-                                "Failed to toggle window",
-                                "error"
+                                  "Error",
+                                  "Failed to toggle window",
+                                  "error"
                               )
                             }
-                          } catch (error) {
-                            console.error("Error toggling window:", error)
-                            showToast(
-                              "Error",
-                              "Failed to toggle window",
-                              "error"
-                            )
-                          }
-                        }}
+                          }}
                       >
                         <div className="flex items-center justify-between">
                           <span className="truncate">切换窗口</span>
@@ -602,36 +602,56 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                             : "首先截取一个屏幕截图来生成一个解决方案。"}
                         </p>
                       </div> */}
-                      
+
                       {/* Delete Last Screenshot Command */}
-                      
+
 
                       <div
-                        className="cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors"
-                        // onClick={async () => {
-                        //   try {
-                        //     const result =
-                        //       // await window.electronAPI.toggleMainWindow()
-                        //     if (!result.success) {
-                        //       console.error(
-                        //         "Failed to toggle window:",
-                        //         result.error
-                        //       )
-                        //       showToast(
-                        //         "Error",
-                        //         "Failed to toggle window",
-                        //         "error"
-                        //       )
-                        //     }
-                        //   } catch (error) {
-                        //     console.error("Error toggling window:", error)
-                        //     showToast(
-                        //       "Error",
-                        //       "Failed to toggle window",
-                        //       "error"
-                        //     )
-                        //   }
-                        // }}
+                          className="cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="truncate">调整窗口</span>
+                          <div className="flex gap-1 flex-shrink-0">
+                            <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
+                              {COMMAND_KEY}
+                            </span>
+                            <span className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] leading-none">
+                              -+
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
+                          窗口放大缩小
+                        </p>
+                      </div>
+
+
+                      <div
+                          className="cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors"
+                          // onClick={async () => {
+                          //   try {
+                          //     const result =
+                          //       // await window.electronAPI.toggleMainWindow()
+                          //     if (!result.success) {
+                          //       console.error(
+                          //         "Failed to toggle window:",
+                          //         result.error
+                          //       )
+                          //       showToast(
+                          //         "Error",
+                          //         "Failed to toggle window",
+                          //         "error"
+                          //       )
+                          //     }
+                          //   } catch (error) {
+                          //     console.error("Error toggling window:", error)
+                          //     showToast(
+                          //       "Error",
+                          //       "Failed to toggle window",
+                          //       "error"
+                          //     )
+                          //   }
+                          // }}
                       >
                         <div className="flex items-center justify-between">
                           <span className="truncate">移动窗口</span>
@@ -645,45 +665,45 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                           </div>
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
-                        键盘上下移动
+                          键盘上下移动
                         </p>
                       </div>
-                     
+
 
                       <div
-                        className={`cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors ${
-                          screenshotCount > 0
-                            ? ""
-                            : "opacity-50 cursor-not-allowed"
-                        }`}
-                        onClick={async () => {
-                          if (screenshotCount === 0) return
-                          
-                          try {
-                            const result = await window.electronAPI.deleteLastScreenshot()
-                            if (!result.success) {
-                              console.error(
-                                "Failed to delete last screenshot:",
-                                result.error
-                              )
+                          className={`cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors ${
+                              screenshotCount > 0
+                                  ? ""
+                                  : "opacity-50 cursor-not-allowed"
+                          }`}
+                          onClick={async () => {
+                            if (screenshotCount === 0) return
+
+                            try {
+                              const result = await window.electronAPI.deleteLastScreenshot()
+                              if (!result.success) {
+                                console.error(
+                                    "Failed to delete last screenshot:",
+                                    result.error
+                                )
+                                showToast(
+                                    "Error",
+                                    result.error || "Failed to delete screenshot",
+                                    "error"
+                                )
+                              } else {
+                                // 删除成功后调用回调函数
+                                await onDeleteLastScreenshot?.()
+                              }
+                            } catch (error) {
+                              console.error("Error deleting screenshot:", error)
                               showToast(
-                                "Error",
-                                result.error || "Failed to delete screenshot",
-                                "error"
+                                  "Error",
+                                  "Failed to delete screenshot",
+                                  "error"
                               )
-                            } else {
-                              // 删除成功后调用回调函数
-                              await onDeleteLastScreenshot?.()
                             }
-                          } catch (error) {
-                            console.error("Error deleting screenshot:", error)
-                            showToast(
-                              "Error",
-                              "Failed to delete screenshot",
-                              "error"
-                            )
-                          }
-                        }}
+                          }}
                       >
                         <div className="flex items-center justify-between">
                           <span className="truncate">删除上一张截图</span>
@@ -698,38 +718,38 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                         </div>
                         <p className="text-[10px] leading-relaxed text-white/70 truncate mt-1">
                           {screenshotCount > 0
-                            ? "删除当前屏幕截图"
-                            : "没有截图可以删除"}
+                              ? "删除当前屏幕截图"
+                              : "没有截图可以删除"}
                         </p>
                       </div>
 
 
                       <div
-                        className="cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors"
-                        onClick={async () => {
-                          try {
-                            const result =
-                              await window.electronAPI.quit()
-                            if (!result.success) {
-                              console.error(
-                                "Failed to quit app",
-                                result.error
-                              )
+                          className="cursor-pointer rounded px-2 py-1.5 hover:bg-white/10 transition-colors"
+                          onClick={async () => {
+                            try {
+                              const result =
+                                  await window.electronAPI.quit()
+                              if (!result.success) {
+                                console.error(
+                                    "Failed to quit app",
+                                    result.error
+                                )
+                                showToast(
+                                    "Error",
+                                    "Failed to quit app",
+                                    "error"
+                                )
+                              }
+                            } catch (error) {
+                              console.error("Error quitting app:", error)
                               showToast(
-                                "Error",
-                                "Failed to quit app",
-                                "error"
+                                  "Error",
+                                  "Failed to quit app",
+                                  "error"
                               )
                             }
-                          } catch (error) {
-                            console.error("Error quitting app:", error)
-                            showToast(
-                              "Error",
-                              "Failed to quit app",
-                              "error"
-                            )
-                          }
-                        }}
+                          }}
                       >
                         <div className="flex items-center justify-between">
                           <span className="truncate">退出程序</span>
@@ -747,7 +767,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                         </p> */}
                       </div>
 
-                      
+
                     </div>
 
                     <div className="pt-3 mt-3 border-t border-white/10">
@@ -768,29 +788,29 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
                       {/* personnel information */}
                       <div className="mb-3 px-2 space-y-1">
                         <div className="flex items-center justify-between text-[13px] font-medium text-white/90">
-                        <span>登陆用户 {userEmail || '未登录'}</span>
+                          <span>登陆用户 {userEmail || '未登录'}</span>
                         </div>
                       </div>
 
-                    {/* Separator and Log Out */}
+                      {/* Separator and Log Out */}
                       <button
-                        onClick={handleSignOut}
-                        className="flex items-center gap-2 text-[11px] text-red-400 hover:text-red-300 transition-colors w-full"
+                          onClick={handleSignOut}
+                          className="flex items-center gap-2 text-[11px] text-red-400 hover:text-red-300 transition-colors w-full"
                       >
                         <div className="w-4 h-4 flex items-center justify-center">
                           <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="w-3 h-3"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-3 h-3"
                           >
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                            <polyline points="16 17 21 12 16 7" />
-                            <line x1="21" y1="12" x2="9" y2="12" />
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
                           </svg>
                         </div>
                         退出登陆

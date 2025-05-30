@@ -3,7 +3,7 @@ import fs from "node:fs"
 import path from "node:path"
 import { ScreenshotHelper } from "./ScreenshotHelper"
 import { IProcessingHelperDeps } from "./main"
-import * as axios from "axios"
+import axios from "axios"
 import { app, BrowserWindow, dialog } from "electron"
 import { OpenAI } from "openai"
 import { configHelper } from "./ConfigHelper"
@@ -459,9 +459,47 @@ export class ProcessingHelper {
       }
 
       let problemInfo;
-      
-      if (config.apiProvider === "openai") {
-        // Verify OpenAI client
+      // Verify OpenAI client
+      if (config.apiProvider === "openai" && config.baseUrl) {
+        // 用代理
+        const messages = [
+          {
+            role: "system" as const, 
+            content: "You are a coding challenge interpreter. Analyze the screenshot of the coding problem and extract all relevant information. Return the information in JSON format with these fields: problem_statement, constraints, example_input, example_output. Just return the structured JSON without any other text."
+          },
+          {
+            role: "user" as const,
+            content: [
+              {
+                type: "text" as const, 
+                text: `Extract the coding problem details from these screenshots. Return in JSON format. Preferred coding language we gonna use for this problem is ${language}.`
+              },
+              ...imageDataList.map(data => ({
+                type: "image_url" as const,
+                image_url: { url: `data:image/png;base64,${data}` }
+              }))
+            ]
+          }
+        ];
+        const result = await this.callOpenAIProxy(
+          config.extractionModel || "gpt-4o",
+          messages,
+          config.apiKey,
+          config.baseUrl
+        );
+        try {
+          const responseText = result.choices[0].message.content;
+          const jsonText = responseText.replace(/```json|```/g, '').trim();
+          problemInfo = JSON.parse(jsonText);
+        } catch (error) {
+          console.error("Error parsing OpenAI response:", error);
+          return {
+            success: false,
+            error: "Failed to parse problem information. Please try again or use clearer screenshots."
+          };
+        }
+      } else if (config.apiProvider === "openai") {
+        // 用 openai sdk 官方
         if (!this.openaiClient) {
           this.initializeAIClient(); // Try to reinitialize
           
@@ -544,7 +582,7 @@ export class ProcessingHelper {
           ];
 
           // Make API request to Gemini
-          const response = await axios.default.post(
+          const response = await axios.post(
             `https://generativelanguage.googleapis.com/v1beta/models/${config.extractionModel || "gemini-2.0-flash"}:generateContent?key=${this.geminiApiKey}`,
             {
               contents: geminiMessages,
@@ -762,28 +800,57 @@ For complexity explanations, please be thorough. For example: "Time complexity: 
 Your solution should be efficient, well-commented, and handle edge cases.
 `;
 
-      let responseContent;
+
+
+
+// let responseContent;
       
-      if (config.apiProvider === "openai") {
-        // OpenAI processing
-        if (!this.openaiClient) {
-          return {
-            success: false,
-            error: "OpenAI API key not configured. Please check your settings."
-          };
-        }
-        
-        // Send to OpenAI API
+// if (config.apiProvider === "openai") {
+//   // OpenAI processing
+//   if (!this.openaiClient) {
+//     return {
+//       success: false,
+//       error: "OpenAI API key not configured. Please check your settings."
+//     };
+//   }
+  
+//   // Send to OpenAI API
+//   const solutionResponse = await this.openaiClient.chat.completions.create({
+//     model: config.solutionModel || "gpt-4o",
+//     messages: [
+//       { role: "system", content: "You are an expert coding interview assistant. Provide clear, optimal solutions with detailed explanations." },
+//       { role: "user", content: promptText }
+//     ],
+//     max_tokens: 4000,
+//     temperature: 0.2
+//   });
+//    responseContent = solutionResponse.choices[0].message.content;
+
+      let responseContent = "";
+      
+      if (config.apiProvider === "openai" && config.baseUrl) {
+        // 用代理
+        const result = await this.callOpenAIProxy(
+          config.solutionModel,
+          [
+            { role: "system", content: "你是一个面试助手..." },
+            { role: "user", content: promptText }
+          ],
+          config.apiKey,
+          config.baseUrl
+        );
+        responseContent = result.choices[0].message.content;
+      } else if (config.apiProvider === "openai") {
+        // 用 openai sdk 官方
         const solutionResponse = await this.openaiClient.chat.completions.create({
           model: config.solutionModel || "gpt-4o",
           messages: [
-            { role: "system", content: "You are an expert coding interview assistant. Provide clear, optimal solutions with detailed explanations." },
+            { role: "system", content: "你是一个面试助手..." },
             { role: "user", content: promptText }
           ],
           max_tokens: 4000,
           temperature: 0.2
         });
-
         responseContent = solutionResponse.choices[0].message.content;
       } else if (config.apiProvider === "gemini")  {
         // Gemini processing
@@ -808,7 +875,7 @@ Your solution should be efficient, well-commented, and handle edge cases.
           ];
 
           // Make API request to Gemini
-          const response = await axios.default.post(
+          const response = await axios.post(
             `https://generativelanguage.googleapis.com/v1beta/models/${config.solutionModel || "gemini-2.0-flash"}:generateContent?key=${this.geminiApiKey}`,
             {
               contents: geminiMessages,
@@ -1129,7 +1196,7 @@ If you include code examples, use proper markdown code blocks with language spec
             });
           }
 
-          const response = await axios.default.post(
+          const response = await axios.post(
             `https://generativelanguage.googleapis.com/v1beta/models/${config.debuggingModel || "gemini-2.0-flash"}:generateContent?key=${this.geminiApiKey}`,
             {
               contents: geminiMessages,
@@ -1288,6 +1355,20 @@ If you include code examples, use proper markdown code blocks with language spec
       console.error("Debug processing error:", error);
       return { success: false, error: error.message || "Failed to process debug request" };
     }
+  }
+
+  private async callOpenAIProxy(model: string, messages: any[], apiKey: string, baseUrl: string) {
+    const url = `${baseUrl}/chat/completions`;
+    const headers = {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json"
+    };
+    const data = {
+      model,
+      messages
+    };
+    const response = await axios.post(url, data, { headers });
+    return response.data;
   }
 
   public cancelOngoingRequests(): void {

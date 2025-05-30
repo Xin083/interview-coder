@@ -457,7 +457,7 @@ export function SettingsDialog({ open: externalOpen, onOpenChange }: SettingsDia
             </div>
           </div>
           
-          <div className="space-y-2 mt-4">
+          {/* <div className="space-y-2 mt-4">
             <label className="text-sm font-medium text-white mb-2 block">键盘快捷键</label>
             <div className="bg-black/30 border border-white/10 rounded-lg p-3">
               <div className="grid grid-cols-2 gap-y-2 text-xs">
@@ -498,7 +498,7 @@ export function SettingsDialog({ open: externalOpen, onOpenChange }: SettingsDia
                 <div className="text-white/90 font-mono">Ctrl+= / Cmd+=</div>
               </div>
             </div>
-          </div>
+          </div> */}
           
           <div className="space-y-4 mt-4">
             <label className="text-sm font-medium text-white">AI 模型选择</label>

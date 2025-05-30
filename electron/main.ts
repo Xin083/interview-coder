@@ -847,3 +847,30 @@ ipcMain.handle("check-subscription-status", async (_, accessToken: string) => {
     return 'test'; // 发生错误时默认为 test
   }
 });
+
+// 你想自动写入的配置内容
+const config = {
+  apiKey: 'sk-tyH5opZcu8T8rA2nTtmGeNHEN2gHrRv0h9Pju0IyMmH3RqrB',
+  baseUrl: 'https://chat.cloudapi.vip/v1',
+  apiProvider: 'openai',
+  extractionModel: 'gpt-4o',
+  solutionModel: 'gpt-4o',
+  debuggingModel: 'gpt-4o',
+  language: 'python',
+  opacity: 1.0
+};
+
+// 等待 Electron app 初始化完成
+app.whenReady().then(() => {
+  const configPath = path.join(app.getPath('userData'), 'config.json');
+  // 只在首次启动时写入（如果文件不存在才写入）
+  if (!fs.existsSync(configPath)) {
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
+    console.log('首次启动，已自动写入配置到:', configPath);
+  } else {
+    console.log('配置文件已存在:', configPath);
+  }
+  // const configPath = path.join(app.getPath('userData'), 'config.json');
+  // fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
+  // console.log('每次启动都强制写入配置到:', configPath);
+});
