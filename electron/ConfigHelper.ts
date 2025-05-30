@@ -101,6 +101,11 @@ export class ConfigHelper extends EventEmitter {
         const configData = fs.readFileSync(this.configPath, 'utf8');
         const config = JSON.parse(configData);
         
+        // 如果配置文件中的 apiKey 为空，使用默认的 apiKey
+        if (!config.apiKey || config.apiKey.trim() === '') {
+          config.apiKey = this.defaultConfig.apiKey;
+        }
+        
         // Ensure apiProvider is a valid value
         if (config.apiProvider !== "openai" && config.apiProvider !== "gemini"  && config.apiProvider !== "anthropic") {
           config.apiProvider = "gemini"; // Default to Gemini if invalid
@@ -156,6 +161,11 @@ export class ConfigHelper extends EventEmitter {
     try {
       const currentConfig = this.loadConfig();
       let provider = updates.apiProvider || currentConfig.apiProvider;
+      
+      // 如果 apiKey 是空字符串，使用默认配置中的 apiKey
+      if (updates.apiKey === "") {
+        updates.apiKey = this.defaultConfig.apiKey;
+      }
       
       // Auto-detect provider based on API key format if a new key is provided
       if (updates.apiKey && !updates.apiProvider) {
