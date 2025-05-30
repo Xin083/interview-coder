@@ -1,6 +1,37 @@
 import logo from '../../assets/logo.svg';
 import { COMMAND_KEY } from "../utils/platform"
+import { useEffect, useRef } from "react";
+
 export const LoginPage: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (!containerRef.current) return;
+      const height = containerRef.current.scrollHeight || 600;
+      const width = containerRef.current.scrollWidth || 800;
+      window.electronAPI?.updateContentDimensions({ width, height });
+    };
+
+    // Force initial dimension update immediately
+    updateDimensions();
+    
+    // Set a fallback timer to ensure dimensions are set
+    const fallbackTimer = setTimeout(() => {
+      window.electronAPI?.updateContentDimensions({ width: 800, height: 600 });
+    });
+
+    const resizeObserver = new ResizeObserver(updateDimensions);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+      clearTimeout(fallbackTimer);
+    };
+  }, []);
+
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     const url = 'https://www.interviewcoder.cn/auth/session';
@@ -19,7 +50,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-black min-h-screen flex flex-col items-center justify-center p-6">
+    <div ref={containerRef} className="bg-black min-h-screen flex flex-col items-center justify-center p-6">
       <div className="max-w-md w-full bg-black border border-white/10 rounded-xl p-8 shadow-lg flex flex-col items-center">
         <div className="bg-white rounded-full w-28 h-28 flex items-center justify-center mb-8 shadow-md overflow-hidden">
           <img src={logo} alt="logo" className="w-28 h-28 object-cover rounded-full" />

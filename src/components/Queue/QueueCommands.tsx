@@ -255,7 +255,7 @@ const QueueCommands: React.FC<QueueCommandsProps> = ({
               <button
                 className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-1.5 rounded-lg transition-colors"
                 onClick={() => {
-                  window.electronAPI?.openExternal?.("http://localhost:3000/#pricing")
+                  window.electronAPI?.openExternal?.("https://www.interviewcoder.cn/#pricing")
               }}
             >
               <svg
