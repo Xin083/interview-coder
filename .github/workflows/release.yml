@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: macos-latest
@@ -24,13 +27,16 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Package (build installer)
+        run: npm run package
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dist/*.dmg
-            dist/*.exe
-            dist/*.AppImage
+            release/*.dmg
+            release/*.exe
+            release/*.AppImage
           draft: false
           prerelease: false
         env:
