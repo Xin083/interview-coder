@@ -1,8 +1,10 @@
 // Solutions.tsx
 import React, { useState, useEffect, useRef } from "react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { createClient } from '@supabase/supabase-js'
+import { SUPABASE_CONFIG } from '../config/supabase'
 
 import ScreenshotQueue from "../components/Queue/ScreenshotQueue"
 
@@ -12,6 +14,8 @@ import Debug from "./Debug"
 import { useToast } from "../contexts/toast"
 import { COMMAND_KEY } from "../utils/platform"
 import { useAuthStore } from "../store/authStore"
+
+const supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey)
 
 export const ContentSection = ({
   title,
@@ -43,17 +47,18 @@ const SolutionSection = ({
   title,
   content,
   isLoading,
-  currentLanguage
+  currentLanguage,
+  isPro
 }: {
   title: string
   content: React.ReactNode
   isLoading: boolean
   currentLanguage: string
+  isPro: boolean
 }) => {
   const [copied, setCopied] = useState(false)
   const authStore = useAuthStore()
-  const isPro = authStore.subscriptionStatus === 'pro'
-  const shouldBlur = !isPro && authStore.freeTrialUsageCount >= 0
+  console.log('Current subscription status:', authStore.subscriptionStatus)
 
   const copyToClipboard = () => {
     if (typeof content === "string") {
@@ -78,7 +83,7 @@ const SolutionSection = ({
           </div>
         </div>
       ) : (
-        <div className={`w-full relative ${shouldBlur ? 'blur-md' : ''}`}>
+        <div className={`w-full relative ${ isPro ? '' : 'blur-md'}`}>
           <button
             onClick={copyToClipboard}
             className="absolute top-2 right-2 text-xs text-white bg-white/10 hover:bg-white/20 rounded px-2 py-1 transition"
@@ -110,11 +115,13 @@ const SolutionSection = ({
 export const ComplexitySection = ({
   timeComplexity,
   spaceComplexity,
-  isLoading
+  isLoading,
+  isPro
 }: {
   timeComplexity: string | null
   spaceComplexity: string | null
   isLoading: boolean
+  isPro: boolean
 }) => {
   // Helper to ensure we have proper complexity values
   const formatComplexity = (complexity: string | null): string => {
@@ -135,9 +142,6 @@ export const ComplexitySection = ({
   
   const formattedTimeComplexity = formatComplexity(timeComplexity);
   const formattedSpaceComplexity = formatComplexity(spaceComplexity);
-  const authStore = useAuthStore()
-  const isPro = authStore.subscriptionStatus === 'pro'
-  const shouldBlur = !isPro && authStore.freeTrialUsageCount >= 0
   
   return (
     <div className="space-y-2">
@@ -149,7 +153,7 @@ export const ComplexitySection = ({
           Calculating complexity...
         </p>
       ) : (
-        <div className={`space-y-3 ${shouldBlur ? 'blur-md' : ''}`}>
+        <div className={`space-y-3 ${isPro ? '' : 'blur-md'}`}>
           <div className="text-[13px] leading-[1.4] text-gray-100 bg-white/5 rounded-md p-3">
             <div className="flex items-start gap-2">
               <div className="w-1 h-1 rounded-full bg-blue-400/80 mt-2 shrink-0" />
@@ -204,6 +208,8 @@ const Solutions: React.FC<SolutionsProps> = ({
 
   const [isResetting, setIsResetting] = useState(false)
 
+  const [isPro, setIsPro] = useState(false)
+
   interface Screenshot {
     id: string
     path: string
@@ -212,6 +218,33 @@ const Solutions: React.FC<SolutionsProps> = ({
   }
 
   const [extraScreenshots, setExtraScreenshots] = useState<Screenshot[]>([])
+
+  useEffect(() => {
+    const checkSubscription = async () => {
+      const accessToken = localStorage.getItem('accessToken')
+      if (!accessToken) {
+        setIsPro(false)
+        return
+      }
+      try {
+        const payload = JSON.parse(atob(accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+        const userId = payload.sub
+        const { data } = await supabase
+          .from('subscriptions')
+          .select('plan,status')
+          .eq('user_id', userId)
+          .maybeSingle()
+        if (data && data.plan === 'pro' && data.status === 'active') {
+          setIsPro(true)
+        } else {
+          setIsPro(false)
+        }
+      } catch (e) {
+        setIsPro(false)
+      }
+    }
+    checkSubscription()
+  }, [])
 
   useEffect(() => {
     const fetchScreenshots = async () => {
@@ -563,12 +596,14 @@ const Solutions: React.FC<SolutionsProps> = ({
                       content={solutionData}
                       isLoading={!solutionData}
                       currentLanguage={currentLanguage}
+                      isPro={isPro}
                     />
 
                     <ComplexitySection
                       timeComplexity={timeComplexityData}
                       spaceComplexity={spaceComplexityData}
                       isLoading={!timeComplexityData || !spaceComplexityData}
+                      isPro={isPro}
                     />
                   </>
                 )}
