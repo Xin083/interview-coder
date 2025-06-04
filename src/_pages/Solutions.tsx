@@ -1,6 +1,6 @@
 // Solutions.tsx
 import React, { useState, useEffect, useRef } from "react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism"
 
@@ -51,9 +51,9 @@ const SolutionSection = ({
   currentLanguage: string
 }) => {
   const [copied, setCopied] = useState(false)
-  const authStore = useAuthStore()
-  const isPro = authStore.subscriptionStatus === 'pro'
-  const shouldBlur = !isPro && authStore.freeTrialUsageCount >= 0
+  //const authStore = useAuthStore()
+  //const isPro = authStore.subscriptionStatus === 'pro'
+  //const shouldBlur = !isPro && authStore.freeTrialUsageCount >= 0
 
   const copyToClipboard = () => {
     if (typeof content === "string") {
@@ -78,7 +78,7 @@ const SolutionSection = ({
           </div>
         </div>
       ) : (
-        <div className={`w-full relative ${shouldBlur ? 'blur-md' : ''}`}>
+        <div className="w-full relative">
           <button
             onClick={copyToClipboard}
             className="absolute top-2 right-2 text-xs text-white bg-white/10 hover:bg-white/20 rounded px-2 py-1 transition"
@@ -135,9 +135,9 @@ export const ComplexitySection = ({
   
   const formattedTimeComplexity = formatComplexity(timeComplexity);
   const formattedSpaceComplexity = formatComplexity(spaceComplexity);
-  const authStore = useAuthStore()
-  const isPro = authStore.subscriptionStatus === 'pro'
-  const shouldBlur = !isPro && authStore.freeTrialUsageCount >= 0
+  //const authStore = useAuthStore()
+  //const isPro = authStore.subscriptionStatus === 'pro'
+  // const shouldBlur = !isPro && authStore.freeTrialUsageCount >= 0
   
   return (
     <div className="space-y-2">
@@ -149,7 +149,7 @@ export const ComplexitySection = ({
           Calculating complexity...
         </p>
       ) : (
-        <div className={`space-y-3 ${shouldBlur ? 'blur-md' : ''}`}>
+        <div className="space-y-3">
           <div className="text-[13px] leading-[1.4] text-gray-100 bg-white/5 rounded-md p-3">
             <div className="flex items-start gap-2">
               <div className="w-1 h-1 rounded-full bg-blue-400/80 mt-2 shrink-0" />
